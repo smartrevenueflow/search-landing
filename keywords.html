@@ -1,0 +1,72 @@
+# Create a simple keyword management (add/view) page
+keyword_page_dir = "/mnt/data/search-redirect-complete/keyword"
+os.makedirs(keyword_page_dir, exist_ok=True)
+
+# HTML content for keyword input and display
+keyword_html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manage Keywords</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f3;
+      padding: 40px;
+      color: #333;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    ul {
+      margin-top: 20px;
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔑 Add & View Search Keywords</h1>
+  <input type="text" id="keywordInput" placeholder="Enter a keyword" />
+  <button onclick="addKeyword()">Add Keyword</button>
+  <ul id="keywordList"></ul>
+
+  <script>
+    let keywords = [];
+
+    function addKeyword() {
+      const input = document.getElementById('keywordInput');
+      const value = input.value.trim();
+      if (value && !keywords.includes(value)) {
+        keywords.push(value);
+        updateList();
+        input.value = '';
+      }
+    }
+
+    function updateList() {
+      const list = document.getElementById('keywordList');
+      list.innerHTML = '';
+      keywords.forEach(kw => {
+        const li = document.createElement('li');
+        li.textContent = kw;
+        list.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
+"""
+
+# Save the keyword management HTML page
+keyword_html_path = os.path.join(keyword_page_dir, "keywords.html")
+with open(keyword_html_path, "w") as f:
+    f.write(keyword_html)
+
+# Zip it for download
+shutil.make_archive("/mnt/data/keyword-manager-page", "zip", keyword_page_dir)
